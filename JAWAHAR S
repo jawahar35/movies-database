@@ -1,0 +1,128 @@
+create database film
+use film
+create table film (movies_id int,movies_title varchar(255),movies_budget varchar(255),moviesreleasing_year varchar(255),prod_id int);
+select * from film
+insert into film values (11,"avatar",6700000,2002,201)
+insert into film values (22,"aliens",8500000,2003,201)
+insert into film values (33,"back to the future",5400000,2004,202)
+insert into film values (44,"donnie darko",9300000,2005,201)
+insert into film values (55,"blade runner",4500000,2006,203)
+insert into film values (66,"veeran",7200000,2023,204)
+insert into film values (77,"black site",5600000,2007,205)
+insert into film values (88,"viruman",77000000,2008,206)
+insert into film values (99,"paruthiveeran",6900000,2009,205)
+insert into film values (100,"bakasuran",7200000,2003,207)
+select * from film
+
+create table producer(prod_id int,prod_name varchar(255),prod_number varchar(255));
+insert into producer values (201,"ragul",9360673684)
+insert into producer values (202, "yuki",8778558246)
+insert into producer values (203,"jawahar",8072896310)
+insert into producer values (204, "mukesh",6234578967)
+insert into producer values (205, "bharath",9360023448)
+insert into producer values (206,"siva",5654780727)
+insert into producer values (207,"raj",6589799999)
+select * from producer
+
+create table actress (act_id int,act_name varchar(255),act_gender varchar(255));
+insert into actress values (101,"ravi","male")
+insert into actress values (102,"kumar","male")
+insert into actress values (103,"abi","female")
+insert into actress values (104,"indira","female")
+insert into actress values (105,"vichitra","female")
+insert into actress values (106,"murali","male")
+insert into actress values (107,"vignesh","male")
+select * from actress 
+
+create table review (movies_id int,rating varchar(255));
+insert into review values (11,"****")
+insert into review values (22,"*******")
+insert into review values (33,"*********")
+insert into review values (44,"******")
+insert into review values (55,"*****")
+insert into review values (66,"********")
+insert into review values (77,"*****")
+insert into review values (88,"******")
+insert into review values (99,"********")
+insert into review values (100,"*****")
+select * from review
+
+create table casting (act_id int,movies_id varchar(255),part int)
+insert into casting values (101,11,"actress")
+insert into casting values (103,44,"actor")
+insert into casting values (105,66,"guest")
+insert into casting values (102,22,"hero")
+insert into casting values (104,33,"comdey")
+select * from casting
+
+alter table casting
+drop column part
+alter table casting
+add column part varchar(255)
+
+select prod_id from producer where prod_name="ragul"
+select movies_title
+from film 
+where prod_id in (select prod_id
+from producer 
+where prod_name="ragul");
+
+select a.act_name,f.movies_title,f.moviesreleasing_year
+from actress a,casting c,film f
+where a.act_id=c.act_id
+and c.movies_id=f.movies_id
+and f.moviesreleasing_year between 2005 and 2009;
+
+select f.movies_title,r.rating
+from film f,review r
+where f.movies_id=r.movies_id
+order by r.rating desc
+
+select prod_id
+FROM producer
+WHERE prod_name ="ragual"
+
+select movies_id from film
+where prod_id in(select prod_id
+from producer
+where prod_name ="ragul")
+
+update review
+set rating="*******"
+where movies_id in (select movies_id from film
+where prod_id in (select prod_id
+from producer
+where prod_name ="ragul"));
+
+select * from review
+
+alter table film
+add column moviereleasing_date varchar(255)
+select * from film
+update film set moviereleasing_date="2002-04-02" where movies_id=11
+update film set moviereleasing_date="2003-05-06" where movies_id=22
+update film set moviereleasing_date="2004-08-08" where movies_id=33
+update film set moviereleasing_date="2005-02-02" where movies_id=44
+update film set moviereleasing_date="2006-06-03" where movies_id=55
+
+SELECT movies_title, moviereleasing_date
+FROM film;
+
+select * from film
+left join producer on producer.prod_id=film.movies_id
+union all
+select * from film
+right join producer on producer.prod_id=film.movies_id
+
+SELECT *
+FROM film
+JOIN producer ON film.movies_id = producer.prod_id
+JOIN actress ON producer.prod_id = actress.act_id
+JOIN review ON actress.act_id = review.rating
+JOIN casting ON review.rating = casting.part
+order by film.movies_id 
+
+
+
+
+
